@@ -2,47 +2,48 @@ import styled from "styled-components";
 import { Button, Grid, Paper, TextField, Typography } from "@material-ui/core";
 
 export const Content = styled.div`
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  padding: 8px;
 `;
 
 export const InputText = styled(TextField)`
-  width: 100%;
+  width: calc(100% - 64px);
   height: 100%;
 `;
 
 export const StyledButton = styled(Button)`
-  width: 100%;
+  width: 56px;
   height: 100%;
 `;
 
 export const TopGrid = styled(Grid)`
-  height: 100%;
+  height: calc(100vh - 56px);
+  display: flex;
 `;
 
 export const Footer = styled(Grid)`
-  position: fixed;
-  left: 0;
-  bottom: 0;
   width: 100%;
-  max-height: 10vh;
+  height: 56px;
 `;
 
 export const List = styled(Paper)`
-  height: 90vh;
+  height: calc(100vh - 56px - 16px);
+  width: calc(100% - 16px);
+  min-width: 72px;
+  margin: 8px;
   overflow: auto;
   vertical-align: top;
-  margin: 8px;
 `;
 
 export const InverseList = styled(Paper)`
-  height: 90vh;
-  overflow: auto;
-  vertical-align: top;
+  height: calc(100vh - 56px - 16px);
+  width: calc(100% - 16px);
+  min-width: 233px;
+
   margin: 8px;
+  overflow: auto;
   display: flex;
   flex-direction: column-reverse;
 `;

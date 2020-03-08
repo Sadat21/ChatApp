@@ -5,7 +5,6 @@ export class SocketUtil {
   public socket: SocketIOClient.Socket;
 
   constructor() {
-    console.log("Creating a socket");
     this.socket = socketIOClient(this.ENDPOINT);
   }
 

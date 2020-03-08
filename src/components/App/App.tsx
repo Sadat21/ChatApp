@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as S from "./App.styles";
 import {
   Grid,
@@ -18,12 +18,14 @@ import { User } from "../../redux/models/User";
 // TODO:
 /*
 Cookies
-Responsive
-Make a nice Dialog on error
+Sanitize inputs
+Make a nice Dialog on error, show if server is offline
 
 Make nice scroll bar
-Fix message structure and sizing -  Make date/name appear on click/hover
+Fix message structure and sizing -  Make date/name appear on click/hover - Text align fiasco
  */
+
+export const MIN_WINDOW_SIZE = 950;
 
 function App() {
   const currentUser: User = useSelector((state: ReduxState) => {
@@ -40,6 +42,10 @@ function App() {
 
   const [message, setMessage] = useState<string>("");
 
+  const [isMobile, setIsMobile] = useState<boolean>(
+    window.innerWidth > MIN_WINDOW_SIZE
+  );
+
   function sendMessage() {
     if (message.trim()) {
       if (message.includes("/nickcolour")) {
@@ -54,29 +60,51 @@ function App() {
     }
   }
 
+  useEffect(() => {
+    window.addEventListener("resize", updateWindowSize);
+
+    return () => {
+      window.removeEventListener("resize", updateWindowSize);
+    };
+  });
+
+  function updateWindowSize(): void {
+    if (window.innerWidth < MIN_WINDOW_SIZE) {
+      setIsMobile(false);
+    } else {
+      setIsMobile(true);
+    }
+  }
+
   return (
     <S.Content>
       <SocketContainer />
 
       <S.TopGrid container>
-        <Grid item xs={4}>
-          <S.List>
-            <S.Title variant={"h5"}>Your Profile</S.Title>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar
-                  variant={"rounded"}
-                  style={{ backgroundColor: currentUser.colour }}
-                >
-                  {currentUser.nickname[0]}
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary={currentUser.nickname} />
-            </ListItem>
-            <S.Title variant={"h5"}>Online Users</S.Title>
+        <Grid item xs={3} sm={2} md={3}>
+          <S.List elevation={10}>
+            {isMobile ? (
+              <React.Fragment>
+                <S.Title variant={"h5"}>Profile</S.Title>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar
+                      variant={"rounded"}
+                      style={{ backgroundColor: currentUser.colour }}
+                    >
+                      {currentUser.nickname[0]}
+                    </Avatar>
+                  </ListItemAvatar>
+                  {isMobile ? (
+                    <ListItemText primary={currentUser.nickname} />
+                  ) : null}
+                </ListItem>
+                <S.Title variant={"h5"}>Online</S.Title>
+              </React.Fragment>
+            ) : null}
             {onlineUsers.map((user, index) => {
               return (
-                <ListItem>
+                <ListItem key={index}>
                   <ListItemAvatar>
                     <Avatar
                       variant={"rounded"}
@@ -85,14 +113,14 @@ function App() {
                       {user.nickname[0].toUpperCase()}
                     </Avatar>
                   </ListItemAvatar>
-                  <ListItemText primary={user.nickname} />
+                  {isMobile ? <ListItemText primary={user.nickname} /> : null}
                 </ListItem>
               );
             })}
           </S.List>
         </Grid>
-        <Grid item xs={8}>
-          <S.InverseList>
+        <Grid item xs={9} sm={10} md={9}>
+          <S.InverseList elevation={10}>
             {messages.map((value, index) => {
               return (
                 <ListItem
@@ -136,15 +164,23 @@ function App() {
         </Grid>
       </S.TopGrid>
       <S.Footer container>
-        <Grid item xs={10}>
+        <Grid item xs={12}>
           <S.InputText
             variant={"outlined"}
             value={message}
             onChange={event => setMessage(event.target.value)}
+            onKeyPress={event => {
+              if (event.key === "Enter") {
+                sendMessage();
+              }
+            }}
+            placeholder={"Welcome " + currentUser.nickname}
           />
-        </Grid>
-        <Grid item xs={2}>
-          <S.StyledButton variant={"contained"} onClick={sendMessage}>
+          <S.StyledButton
+            variant={"contained"}
+            onClick={sendMessage}
+            color={"primary"}
+          >
             <SendIcon />
           </S.StyledButton>
         </Grid>

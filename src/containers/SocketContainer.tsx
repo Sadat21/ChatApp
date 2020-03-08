@@ -22,8 +22,6 @@ export const SocketContainer = (): JSX.Element => {
     });
 
     mySocket.on("message", (messages: Message[]) => {
-      console.log("Here");
-      console.log(messages);
       dispatch(updateMessageAction(messages));
     });
 
