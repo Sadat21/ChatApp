@@ -8,7 +8,6 @@ import { createStore, applyMiddleware, Store } from "redux";
 import { LogEntryObject, createLogger } from "redux-logger";
 import combinedReducer, { ReduxState } from "./redux/combindedReducer";
 import { Provider } from "react-redux";
-import { CookiesProvider } from "react-cookie";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const reducer: Reducer<ReduxState, any> = combinedReducer;
@@ -26,10 +25,7 @@ const loggerMiddleware = createLogger({
 });
 
 // @ts-ignore
-const store: Store = createStore(
-  combinedReducer,
-  applyMiddleware(thunkMiddleware, loggerMiddleware)
-);
+const store: Store = createStore( reducer, applyMiddleware(thunkMiddleware, loggerMiddleware));
 
 const render = (Component: any): void => {
   return ReactDOM.render(

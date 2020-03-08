@@ -1,4 +1,5 @@
 import socketIOClient from "socket.io-client";
+import Cookies from "js-cookie";
 
 export class SocketUtil {
   private ENDPOINT = "http://127.0.0.1:4000";
@@ -6,6 +7,17 @@ export class SocketUtil {
 
   constructor() {
     this.socket = socketIOClient(this.ENDPOINT);
+    this.sendUserConnect();
+  }
+
+  public sendUserConnect() {
+    const cookie = Cookies.get("user");
+    let username = "";
+    if (cookie) {
+      username = cookie;
+    }
+
+    this.socket.emit("user_connect", username);
   }
 
   public sendMessage(message: string) {

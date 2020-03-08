@@ -6,6 +6,7 @@ import { updateUserAction } from "../redux/actions/UserActions";
 import { updateOnlineUsersAction } from "../redux/actions/OnlineUsersActions";
 import { updateMessageAction } from "../redux/actions/MessageActions";
 import { Message } from "../redux/models/Message";
+import Cookies from "js-cookie";
 
 export const SocketContainer = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ export const SocketContainer = (): JSX.Element => {
 
   useEffect(() => {
     mySocket.on("personal_info", (msg: User) => {
+      Cookies.set("user", msg.nickname);
       dispatch(updateUserAction(msg));
     });
 
@@ -27,7 +29,7 @@ export const SocketContainer = (): JSX.Element => {
 
     mySocket.on("error_msg", (error_msg: string) => {
       // TODO: Make nice dialog
-      alert(error_msg)
+      alert(error_msg);
     });
   }, [dispatch, mySocket]);
 

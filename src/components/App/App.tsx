@@ -17,9 +17,9 @@ import { User } from "../../redux/models/User";
 
 // TODO:
 /*
-Cookies
 Sanitize inputs
 Make a nice Dialog on error, show if server is offline
+Fix scrolling on firefox
 
 Make nice scroll bar
 Fix message structure and sizing -  Make date/name appear on click/hover - Text align fiasco
