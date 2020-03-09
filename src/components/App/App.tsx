@@ -19,9 +19,9 @@ import { animateScroll } from "react-scroll";
 
 // TODO:
 /*
-Fix scrolling on all input/incomming message
-Make a nice Dialog on error, show if server is offline
+Make a nice Dialog on error
 
+Fix scrolling on all input/incoming message
 Make nice scroll bar
 Fix message structure and sizing -  Make date/name appear on click/hover - Text align fiasco
 */

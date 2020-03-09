@@ -2,9 +2,18 @@ import React, { useEffect } from "react";
 import { socketObj } from "../utils/SocketUtil";
 import { useDispatch } from "react-redux";
 import { User } from "../redux/models/User";
-import { updateUserAction } from "../redux/actions/UserActions";
-import { updateOnlineUsersAction } from "../redux/actions/OnlineUsersActions";
-import { updateMessageAction } from "../redux/actions/MessageActions";
+import {
+  resetUserAction,
+  updateUserAction
+} from "../redux/actions/UserActions";
+import {
+  resetOnlineUsersAction,
+  updateOnlineUsersAction
+} from "../redux/actions/OnlineUsersActions";
+import {
+  resetMessageAction,
+  updateMessageAction
+} from "../redux/actions/MessageActions";
 import { Message } from "../redux/models/Message";
 import Cookies from "js-cookie";
 
@@ -14,6 +23,16 @@ export const SocketContainer = (): JSX.Element => {
   const mySocket = socketObj.socket;
 
   useEffect(() => {
+    mySocket.on("reconnect", () => {
+      socketObj.sendUserConnect();
+    });
+
+    mySocket.on("disconnect", () => {
+      dispatch(resetMessageAction());
+      dispatch(resetOnlineUsersAction());
+      dispatch(resetUserAction());
+    });
+
     mySocket.on("personal_info", (msg: User) => {
       Cookies.set("user", msg.nickname);
       dispatch(updateUserAction(msg));
