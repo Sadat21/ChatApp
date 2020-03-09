@@ -1,8 +1,17 @@
+Author: Sadat Islam <br/>
+UCID: 10171897<br/>
+Tutorial Section: B05
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
 In the project directory, you can run:
+
+### `npm install`
+
+Install all dependencies needed for the server. Needs to be run before starting the server.
 
 ### `npm start`
 
