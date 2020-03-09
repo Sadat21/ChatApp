@@ -16,6 +16,7 @@ import {
 } from "../redux/actions/MessageActions";
 import { Message } from "../redux/models/Message";
 import Cookies from "js-cookie";
+import { updateErrorAction } from "../redux/actions/ErrorActions";
 
 export const SocketContainer = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -47,8 +48,7 @@ export const SocketContainer = (): JSX.Element => {
     });
 
     mySocket.on("error_msg", (error_msg: string) => {
-      // TODO: Make nice dialog
-      alert(error_msg);
+      dispatch(updateErrorAction(error_msg));
     });
   }, [dispatch, mySocket]);
 

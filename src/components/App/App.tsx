@@ -7,28 +7,34 @@ import {
   ListItemAvatar,
   Avatar,
   ListItemText,
-  CircularProgress
+  CircularProgress,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button
 } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import { socketObj } from "../../utils/SocketUtil";
 import { SocketContainer } from "../../containers/SocketContainer";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ReduxState } from "../../redux/combindedReducer";
 import { User } from "../../redux/models/User";
 import { animateScroll } from "react-scroll";
+import { resetErrorAction } from "../../redux/actions/ErrorActions";
 
-// TODO:
+// TODO: Future work
 /*
-Make a nice Dialog on error
-
 Fix scrolling on all input/incoming message
-Make nice scroll bar
+Make nice scroll bar for all browsers
 Fix message structure and sizing -  Make date/name appear on click/hover - Text align fiasco
 */
 
 export const MIN_WINDOW_SIZE = 950;
 
 function App() {
+  const dispatch = useDispatch();
+
   const currentUser: User = useSelector((state: ReduxState) => {
     return state.userReducer;
   });
@@ -41,11 +47,19 @@ function App() {
     return Array.from(state.messageReducer).reverse();
   });
 
+  const errorMessage = useSelector((state: ReduxState) => {
+    return state.errorReducer;
+  });
+
+  const [dialogMessage, setDialogMessage] = useState("");
+
   const [message, setMessage] = useState<string>("");
 
-  const [isMobile, setIsMobile] = useState<boolean>(
+  const [isMobileSize, setIsMobileSize] = useState<boolean>(
     window.innerWidth > MIN_WINDOW_SIZE
   );
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   function sendMessage() {
     if (message.trim()) {
@@ -78,12 +92,24 @@ function App() {
     });
   });
 
-  function updateWindowSize(): void {
-    if (window.innerWidth < MIN_WINDOW_SIZE) {
-      setIsMobile(false);
-    } else {
-      setIsMobile(true);
+  useEffect(() => {
+    if (errorMessage.length > 0) {
+      setDialogMessage(errorMessage);
+      dispatch(resetErrorAction());
+      setIsDialogOpen(true);
     }
+  }, [dispatch, errorMessage]);
+
+  function updateWindowSize() {
+    if (window.innerWidth < MIN_WINDOW_SIZE) {
+      setIsMobileSize(false);
+    } else {
+      setIsMobileSize(true);
+    }
+  }
+
+  function closeDialog() {
+    setIsDialogOpen(false);
   }
 
   return (
@@ -92,10 +118,21 @@ function App() {
 
       {currentUser.nickname && socketObj.socket.connected ? (
         <React.Fragment>
+          <Dialog open={isDialogOpen}>
+            <DialogContent>
+              <DialogContentText>{dialogMessage}</DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={closeDialog} color="primary" variant="outlined">
+                Okay
+              </Button>
+            </DialogActions>
+          </Dialog>
+
           <S.TopGrid container>
             <Grid item xs={3} sm={2} md={3}>
               <S.List elevation={10}>
-                {isMobile ? (
+                {isMobileSize ? (
                   <React.Fragment>
                     <S.Title variant={"h5"}>Profile</S.Title>
                     <ListItem>
@@ -107,7 +144,7 @@ function App() {
                           {currentUser.nickname[0]}
                         </Avatar>
                       </ListItemAvatar>
-                      {isMobile ? (
+                      {isMobileSize ? (
                         <ListItemText primary={currentUser.nickname} />
                       ) : null}
                     </ListItem>
@@ -125,7 +162,7 @@ function App() {
                           {user.nickname[0].toUpperCase()}
                         </Avatar>
                       </ListItemAvatar>
-                      {isMobile ? (
+                      {isMobileSize ? (
                         <ListItemText primary={user.nickname} />
                       ) : null}
                     </ListItem>
