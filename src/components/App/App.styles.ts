@@ -37,17 +37,34 @@ export const List = styled(Paper)`
   vertical-align: top;
 `;
 
-export const InverseList = styled(Paper)`
-  height: calc(100vh - 56px - 16px);
-  width: calc(100% - 16px);
-  min-width: 233px;
-
-  margin: 8px;
-  overflow: auto;
+export const InverseList = styled.div`
   display: flex;
   flex-direction: column-reverse;
+  flex-grow: 1;
+`;
+
+export const Outside = styled(Paper)`
+  flex-direction: column;
+  overflow-y: auto;
+  display: flex;
+  height: calc(100vh - 56px - 16px);
+  width: calc(100% - 16px);
+  min-width: 72px;
+  margin: 8px;
+  vertical-align: top;
 `;
 
 export const Title = styled(Typography)`
   padding: 8px;
+`;
+
+export const Loading = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -33%);
+  -webkit-transform: translate(-50%, -33%);
 `;
