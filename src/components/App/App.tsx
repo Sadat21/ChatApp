@@ -23,13 +23,6 @@ import { User } from "../../redux/models/User";
 import { animateScroll } from "react-scroll";
 import { resetErrorAction } from "../../redux/actions/ErrorActions";
 
-// TODO: Future work
-/*
-Fix scrolling on all input/incoming message
-Make nice scroll bar for all browsers
-Fix message structure and sizing -  Make date/name appear on click/hover - Text align fiasco
-*/
-
 export const MIN_WINDOW_SIZE = 950;
 
 function App() {
@@ -115,7 +108,6 @@ function App() {
   return (
     <S.Content>
       <SocketContainer />
-
       {currentUser.nickname && socketObj.socket.connected ? (
         <React.Fragment>
           <Dialog open={isDialogOpen}>
@@ -195,7 +187,6 @@ function App() {
                         ) : (
                           <span />
                         )}
-
                         <ListItemText
                           primary={value.message}
                           secondary={
