@@ -2,7 +2,7 @@ import socketIOClient from "socket.io-client";
 import Cookies from "js-cookie";
 
 export class SocketUtil {
-  private ENDPOINT = "http://127.0.0.1:4000";
+  private ENDPOINT = "https://chatapp-73333.appspot.com";
   public socket: SocketIOClient.Socket;
 
   constructor() {
