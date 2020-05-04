@@ -2,7 +2,7 @@
   "name": "chatappfrontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://sadat21.github.io/ChatAppFrontend",
+  "homepage": "https://sadat21.github.io/ChatApp",
   "dependencies": {
     "@material-ui/core": "^4.9.5",
     "@material-ui/icons": "^4.9.1",

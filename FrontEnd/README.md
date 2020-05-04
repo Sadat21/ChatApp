@@ -1,7 +1,7 @@
 Author: Sadat Islam <br/>
 UCID: 10171897<br/>
 Tutorial Section: B05
-Deployed link: https://sadat21.github.io/ChatAppFrontend/
+Deployed link: https://sadat21.github.io/ChatApp
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
